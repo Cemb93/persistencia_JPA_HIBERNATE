@@ -5,26 +5,28 @@ import java.math.BigDecimal;
 
 import javax.persistence.EntityManager;
 
+import cm.jpa.dao.CategoriaDao;
 import cm.jpa.dao.ProductoDao;
+import cm.jpa.modelo.Categoria;
 import cm.jpa.modelo.Producto;
 import cm.jpa.utils.JPAUtils;
 
 public class RegistroDeProducto {
 
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
+		Categoria celulares = new Categoria("CELULARES");
 		
-		Producto celular = new Producto();
-		celular.setNombre("sansung");
-		celular.setDescripcion("tele usado");
-		celular.setPrecio(new BigDecimal("1000"));
+//		Producto celular = new Producto("Samsung", "tele usado", new BigDecimal("2000"), Categoria.CELULARES);
+		Producto celular = new Producto("Samsung", "tele usado", new BigDecimal("2000"), celulares);
 
 		EntityManager em = JPAUtils.getEntityManager();
 		
 		ProductoDao productoDao = new ProductoDao(em);
+		CategoriaDao categoriaDao = new CategoriaDao(em);
 		
 		em.getTransaction().begin();
 		
+		categoriaDao.guardar(celulares);		
 		productoDao.guardar(celular);
 		
 		em.getTransaction().commit();
